@@ -39,7 +39,9 @@ public class CoursePublishController {
         CoursePreviewDto coursePreviewDto = new CoursePreviewDto();
 
         //查询课程发布表
-        CoursePublish coursePublish = coursePublishService.getCoursePublish(courseId);
+//        CoursePublish coursePublish = coursePublishService.getCoursePublish(courseId);
+        //先从缓存查询，缓存中有直接返回，没有再查询数据库
+        CoursePublish coursePublish = coursePublishService.getCoursePublishCache(courseId);
         if(coursePublish == null){
             return coursePreviewDto;
         }
@@ -56,7 +58,12 @@ public class CoursePublishController {
 
     }
 
-
+    /**
+     * @description 课程预览，发布
+     * @author Mr.M
+     * @date 2022/9/16 14:48
+     * @version 1.0
+     */
     @GetMapping("/coursepreview/{courseId}")
     public ModelAndView preview(@PathVariable("courseId") Long courseId) {
 

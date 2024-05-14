@@ -4,6 +4,8 @@ import com.j256.simplemagic.ContentInfo;
 import com.j256.simplemagic.ContentInfoUtil;
 import io.minio.*;
 import io.minio.errors.*;
+import io.minio.messages.DeleteError;
+import io.minio.messages.DeleteObject;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.Test;
@@ -12,7 +14,6 @@ import org.springframework.http.MediaType;
 import java.io.*;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -124,7 +125,10 @@ public class MinioTest {
 //            sources.add(composeSource);
 //        }
 
-        List<ComposeSource> sources = Stream.iterate(0, i -> ++i).limit(6).map(i -> ComposeSource.builder().bucket("testbucket").object("chunk/" + i).build()).collect(Collectors.toList());
+        List<ComposeSource> sources = Stream.iterate(
+                0, i -> ++i).limit(6).map(
+                        i -> ComposeSource.builder().bucket("testbucket").object("chunk/" + i).build())
+                .collect(Collectors.toList());
 
         //指定合并后的objectName等信息
         ComposeObjectArgs composeObjectArgs = ComposeObjectArgs.builder()
@@ -141,6 +145,26 @@ public class MinioTest {
 
 
     //批量清理分块文件
+    //清除分块文件
+    @Test
+    public void test_removeObjects(){
+        //合并分块完成将分块文件清除
+        List<DeleteObject> deleteObjects = Stream.iterate(0, i -> ++i)
+                .limit(6)
+                .map(i -> new DeleteObject("chunk/".concat(Integer.toString(i))))
+                .collect(Collectors.toList());
+
+        RemoveObjectsArgs removeObjectsArgs = RemoveObjectsArgs.builder().bucket("testbucket").objects(deleteObjects).build();
+        Iterable<Result<DeleteError>> results = minioClient.removeObjects(removeObjectsArgs);
+        results.forEach(r->{
+            DeleteError deleteError = null;
+            try {
+                deleteError = r.get();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+    }
 
 
 

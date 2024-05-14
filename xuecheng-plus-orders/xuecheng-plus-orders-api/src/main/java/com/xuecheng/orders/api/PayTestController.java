@@ -15,7 +15,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -89,7 +88,8 @@ public class PayTestController {
             //请在这里加上商户的业务逻辑程序代码
             //商户订单号
 
-            String out_trade_no = new String(request.getParameter("out_trade_no").getBytes("ISO-8859-1"),"UTF-8");
+            String out_trade_no = new String(request.getParameter("out_trade_no")
+                    .getBytes("ISO-8859-1"),"UTF-8");
             //支付宝交易号
 
             String trade_no = new String(request.getParameter("trade_no").getBytes("ISO-8859-1"),"UTF-8");
