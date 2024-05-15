@@ -1,0 +1,7 @@
+### 查询系统字典
+GET {{system_host}}//system/dictionary/all
+
+###
+
+
+

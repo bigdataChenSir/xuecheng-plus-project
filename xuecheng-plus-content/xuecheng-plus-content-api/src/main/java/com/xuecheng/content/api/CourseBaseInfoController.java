@@ -1,5 +1,6 @@
 package com.xuecheng.content.api;
 
+import com.alibaba.cloud.commons.lang.StringUtils;
 import com.xuecheng.base.exception.ValidationGroups;
 import com.xuecheng.base.model.PageParams;
 import com.xuecheng.base.model.PageResult;
@@ -11,7 +12,6 @@ import com.xuecheng.content.model.po.CourseBase;
 import com.xuecheng.content.service.CourseBaseInfoService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -42,8 +42,6 @@ public class CourseBaseInfoController {
         if(StringUtils.isNotEmpty(user.getCompanyId())){
             companyId = Long.parseLong(user.getCompanyId());
         }
-
-
         PageResult<CourseBase> courseBasePageResult = courseBaseInfoService.queryCourseBaseList(companyId,pageParams, queryCourseParamsDto);
 
         return courseBasePageResult;

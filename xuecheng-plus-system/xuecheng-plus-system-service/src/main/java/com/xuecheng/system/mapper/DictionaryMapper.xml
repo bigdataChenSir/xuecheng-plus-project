@@ -12,7 +12,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, name, code, item_values
+        id,name, code,item_values
     </sql>
 
 </mapper>
